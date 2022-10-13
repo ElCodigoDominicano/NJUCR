@@ -1,12 +1,19 @@
 # NJUCR
 A small project I had in mind its merely for educational purposes (self), nothing more. free to use.
 
-Caveat: The data; albeit open to the public, obtainable here -> [https://nj.gov/njsp/ucr/current-crime-data.shtml]
+small-caveat: The data; albeit open to the public, obtainable here -> [https://nj.gov/njsp/ucr/current-crime-data.shtml]
 for Monmouth county sheet "inside the .xlsx files" contain duplicated rows. This program "assumes" data is formatted the same all around
 might implement a fix for that over the course of time.
 
-# Pretty simple to use
 
+<p> 
+  The data, by the crime type (columns) and using the crime statistic(rows) to
+  respresent them as barcharts per county, per recorded statistic by department + their ORINumber (whatever that is.), 
+  and county population. I will continue to improve this and hopefully use it later in a bigger web development based project im currently working on
+</p>
+
+
+# Pretty simple to use
 ## 1) Install a recent version of python >= 3.8:
 [https://www.python.org]
 
@@ -25,7 +32,7 @@ might implement a fix for that over the course of time.
 4.1) After running this command you will notice `(nj_crime) $>` in your console.<br>
 4.2) Navigate into the nj_crime folder. <br>
 
-## 5) Installing application requirements
+## 5) Install application requirements
 `pip install -r requirements`
 
 ## 6) Run the application
