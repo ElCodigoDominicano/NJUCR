@@ -7,8 +7,7 @@ This program....
 - Thus this program is as-is this will not work on other spreadsheet files unless
   the formatting is nearly identical to the way the ones downloaded from the website below.
 
-- Takes roughly 7 seconds if a webbrowser is already opened. was 10
-- Takes roughly 15 seconds if a webbrowser isn't already opened.
+- Takes roughly 7 seconds if no webrowser is open a little less if one is open.
 
 + It produces over several hundred graphs one for each authoritive department in each county for the state of NJ.
 + The public data provided by: https://nj.gov/njsp/ucr/current-crime-data.shtml
@@ -16,7 +15,7 @@ This program....
   as an educational tool teaching myself more on software development(using python),
   data visualization (using plotly graph_objects) and web-application development,
   taking real-world data (in this case NJ Uniform.Crime.Reports) and producing visual results in 
-  this case a graph. as well as using pandas dataframes.
+  this case a graph. as well as using pandas dataframes to help represent all of that data.
 
 ++ This is open sourced for anyone to use .
 
@@ -35,6 +34,7 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
+# Not fully implemented and obviously will change.
 def find_possible_file() -> list[str]:
     """ returns a list of possible spreadsheet files, mainly .xlsx.."""
     it_is_xlsx = []
@@ -51,7 +51,6 @@ def find_possible_file() -> list[str]:
 def get_spreadsheet_names() -> list[str]:
         """RETURNS a list of strings, every string is a county name in NJ from the provided .xlsx spreadsheet."""
         # Excludes the first document labeled DocumentMap.
-        # THINK. Any xlsx file if automated conditional for if more than one file detected.
         get_spreadsheet_names.list_of_sheet_names = pd.ExcelFile("2020_Uniform_Crime_Report.xlsx").sheet_names[1:]
         return get_spreadsheet_names.list_of_sheet_names
 
@@ -82,14 +81,13 @@ async def make_all_dataframes() -> list[pd.DataFrame]:
     make_all_dataframes.department_information = []
     for df in all_counties.values():
         df.copy()
-        # Gather department information such as ORINumber, Department name, and Population 
+       
+      # Gather department information such as ORINumber, Department name, and Population 
         dept_data = df.iloc[1::6, [0, 1, 2]].fillna(0)
         dept_data["Population"] = dept_data["Population"].astype(np.int64) # From float64 
-        
         make_all_dataframes.department_information.extend([str(x[0]) + " " + x[1]  + " " + str(x[2]) for x in dept_data.values.tolist()][:-1])
         
         # row and columns ( excluded columns: ORINumber and Population )     
-        
         all_data = df.loc[
             (df["Agency"] == "Number of Offenses") |
             (df["Agency"] == "Rate Per 100,000") |
@@ -112,7 +110,7 @@ async def show_charts() -> None:
     Creates 1 single trace using graph_objects by columns then for a button supplies a dictionary containing 
     plotly.updatemenus argments and their proper values to update the graph for each department and county total
     """
-    all_dfs = await asyncio.create_task(make_all_dataframes()) # 599 dataframes..
+    all_dfs = await asyncio.create_task(make_all_dataframes()) # 599 dataframes.. 
     fig = go.Figure()
     
     # Create ONE trace; based on column data
@@ -122,9 +120,8 @@ async def show_charts() -> None:
                         visible=True,
                         name=col))
     
-    # Each dictionary in side represents each dataframe as its own graph
-    # for the use of updatemenus below in reguards
-    # to the figure class method update_layout below which is a dropdown button.
+    # Each dictionary inside represents each dataframe as its own graph
+    # for the use of updatemenus below in reguards to the figure class method update_layout below which will be a dropdown button.
     buttons = [] 
     for x, df in enumerate(all_dfs):
         each_trace = dict(
@@ -133,11 +130,9 @@ async def show_charts() -> None:
             visible=True,
             args=[{"type":"bar",
                     "x": [df.index],
-                    "y": [df[col] for col in df.columns],} 
-            ,[0]])
+                    "y": [df[col] for col in df.columns],},[0]])
         buttons.append(each_trace)
-    
-    
+   
     # Layout
     fig.update_layout(showlegend=True, 
         updatemenus=[{
