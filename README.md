@@ -7,9 +7,8 @@ might implement a fix for that over the course of time.
 
 
 <p> 
-  The data, by the crime type (columns) and using the crime statistic(rows) to
-  respresent them as barcharts per county, per recorded statistic by department + their ORINumber (whatever that is.), 
-  and county population. I will continue to improve this and hopefully use it later in a bigger web development based project im currently working on
+  The data, by the crime type (columns) and using the crime statistic(rows) to respresent them as barcharts per county, per recorded statistic
+  by department + their ORINumber (going to go with a little common sense and say its an departmentID, each department has an ID and that ID is the           ORINumber), and county population. I will continue to improve this and hopefully use it later for a bigger web development based project im currently       working on.
 </p>
 
 
