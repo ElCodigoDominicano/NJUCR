@@ -2,28 +2,31 @@
 New Jersey UCR Data Graph
 
 This program....
-!! I'm not affiliated with any public or private offical, media, journalist etc. 
+!! I'm not affiliated with any public or private offical, media, journalist etc.
 
 - Thus this program is as-is this will not work on other spreadsheet files unless
-  the formatting is nearly identical to the way the ones downloaded from the website below.
-
+  the formatting is nearly identical to the way the ones downloaded from the website below
 - Takes roughly 7 seconds if no webrowser is open a little less if one is open.
 
-+ It produces over several hundred graphs one for each authoritive department in each county for the state of NJ.
++ It produces over several hundred graphs one for each authoritive department 
+  in each county for the state of NJ representing the entire states crime rate.
+
 + The public data provided by: https://nj.gov/njsp/ucr/current-crime-data.shtml
+
 + Its a small project I've put together.  though I miss home.. more importantly its meant 
   as an educational tool teaching myself more on software development(using python),
   data visualization (using plotly graph_objects) and web-application development,
   taking real-world data (in this case NJ Uniform.Crime.Reports) and producing visual results in 
   this case a graph. as well as using pandas dataframes to help represent all of that data.
 
-++ This is open sourced for anyone to use .
+++ This is open sourced for anyone to use and change as they would see fit.
 
-WARNING: Monmouth County have duplicate iffy row data no conditional written to handle those errornous rows of data yet.
+WARNING: Monmouth County have duplicate iffy row data no conditional 
+written to handle those errornous rows of data yet.
 
-requirements: inside requirements.txt
+requirements: inside  the requirements.txt file
 
-Those of which will be installed using the terminal and entering this command: pip install -r requirements.txt 
+easly installed using the terminal and entering this command: pip install -r requirements.txt 
 
 Author: AERivas @ElCodigoDR
 Date: 10/13/2022
@@ -33,6 +36,7 @@ import asyncio
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+
 
 # Not fully implemented and obviously will change.
 def find_possible_file() -> list[str]:
@@ -68,11 +72,28 @@ async def get_all_sheets() -> dict[str, pd.DataFrame]:
 async def make_all_dataframes() -> list[pd.DataFrame]:
     """ 
     *Coroutine
-    RETURNS a list containing pandas dataframes, the rows are in groups of 5. respectively, representing each department
-    in each county of the state in NJ. 
     
-    each group of rows have a tag ORINumber(department number..), Department Name, the counties Population, respectivly..
-    those elements are contained in a list of strings think ['orinumber', 'department_name', 'county_population']..
+    RETURNS a list containing pandas dataframes, the rows are contained in groups of 5. respectively, 
+    representing each department in each county of the state in NJ. 
+    
+    Example of the dataframe: 
+    row [stat-per-agency]     [Murder]   [R*]      [Robbery]  [Assault]   [Burglary]  [Larceny]    [AutoTheft]   [Total]
+    0   Number of Offenses      0.0       0.0        0.0        0.0        0.0         0.0           0.0          0.0        
+    1   Rate per 100,000        0.0       0.0        0.0        0.0        0.0         0.0           0.0          0.0        
+    2   Number of Clearances    0.0       0.0        0.0        0.0        0.0         0.0           0.0          0.0        
+    3   Percent Cleared         0.0       0.0        0.0        0.0        0.0         0.0           0.0          0.0        
+    4   Number of Arrests       0.0       0.0        0.0        0.0        0.0         0.0           0.0          0.0        
+    -> roughly 599 gets created, then turned into a trace later 
+    
+    separated 3 items not explicitly set to each group (yet) used as dropdown buttons later
+    ORINumber(department number..), Department name, and the counties population, respectivly..
+    those elements are contained in a separate list of strings.
+    
+    Example for dropdown information: 
+    ['NJ100xF00', 'authoritive_department_bar', '1,000']
+      
+    the excluded columns are:  ORINumber, Agency (Becomes the Index), Population, and
+    Months (has the same number repeated for each sheet for each department..)
     """
     await asyncio.create_task(get_all_sheets())
     all_counties = get_all_sheets.all_sheets
@@ -104,11 +125,12 @@ async def make_all_dataframes() -> list[pd.DataFrame]:
 async def show_charts() -> None:
     """
     *Coroutine
-    This function handles displaying a barchart using Plotly handles the, figures,
-    graphing objects, graphing layout, and adding a dropdown button to each graph being created.
+    This function handles displaying the barcharts for each dataframe created above using Plotly
+    figures, graphing objects, graphing layout, and adding a dropdown button to each graph being created.
     
-    Creates 1 single trace using graph_objects by columns then for a button supplies a dictionary containing 
-    plotly.updatemenus argments and their proper values to update the graph for each department and county total
+    Creates 1 single trace using graph_objects Bar() by columns than as for a button; a dictionary containing 
+    plotly.updatemenus argments and their proper values, labeling each item with the 3 items ['NJ100xF00', 'authoritive_department_bar', '1,000'] 
+    as a button for each graph.
     """
     all_dfs = await asyncio.create_task(make_all_dataframes()) # 599 dataframes.. 
     fig = go.Figure()
@@ -121,7 +143,9 @@ async def show_charts() -> None:
                         name=col))
     
     # Each dictionary inside represents each dataframe as its own graph
-    # for the use of updatemenus below in reguards to the figure class method update_layout below which will be a dropdown button.
+    # for the use of updatemenus below in reguards to the figure class 
+    # method update_layout below contained in its argument updatemenus
+    # which will be information for a dropdown button.
     buttons = [] 
     for x, df in enumerate(all_dfs):
         each_trace = dict(
