@@ -23,7 +23,7 @@ might implement a fix for that over the course of time.
 2.3) Navigate to your Downloads folder<br>
 2.4) Extract the contents of the zip file into the Downloads folder.<br>
 
-## 3) **Good-Practice** Creating a python virtual environment for this or any python based application
+## 3) **!! Good-Practice !!** Creating a python virtual environment for this or any python based application
 ### ..assuming the folder "nj_crime" is in your downloads.. open your shell of choice and type:
  `$> python -m venv nj_crime`
 
