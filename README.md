@@ -37,5 +37,3 @@ might implement a fix for that over the course of time.
 
 ## 6) Run the application
 `python all_nj_crime_data.py`
-
-# If you ask me 'Pizza' is the king and queen of foods.
