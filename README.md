@@ -1,5 +1,5 @@
 # NJUCR
-A small project I had in mind its merely for educational purposes (self), nothing more. free to use.
+A small coding project I've had in mind earlier this year its merely for educational purposes (me learning more on software development, data analytics, computer science), nothing more. free to use.
 
 small-caveat: The data; albeit open to the public, obtainable here -> [https://nj.gov/njsp/ucr/current-crime-data.shtml]
 for Monmouth county sheet "inside the .xlsx files" contain duplicated rows. This program "assumes" data is formatted the same all around
@@ -37,3 +37,5 @@ might implement a fix for that over the course of time.
 
 ## 6) Run the application
 `python all_nj_crime_data.py`
+
+# If you ask me 'Pizza' is the king and queen of foods.
